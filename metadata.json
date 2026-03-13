@@ -1,0 +1,5 @@
+{
+  "name": "Vinted Manager",
+  "description": "Un gestionnaire d'inventaire intelligent qui utilise Gemini pour analyser automatiquement les photos de produits, générer des annonces Vinted et gérer le stock en temps réel avec Firebase Firestore.",
+  "requestFramePermissions": ["camera"]
+}

@@ -1,0 +1,26 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper function to check if the user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Helper function to check if the user owns the resource
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Helper function to validate vintedStatus
+    function isValidVintedStatus(data) {
+      return data.vintedStatus in ['Publie', 'Apublier', 'Arepublier', 'Vendu', 'Enattente'];
+    }
+
+    match /users/{userId}/inventory/{itemId} {
+      allow read: if isOwner(userId);
+      allow create, update: if isOwner(userId) && isValidVintedStatus(request.resource.data);
+      allow delete: if isOwner(userId);
+    }
+  }
+}
